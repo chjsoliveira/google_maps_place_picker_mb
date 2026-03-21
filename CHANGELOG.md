@@ -1,3 +1,8 @@
+## [3.1.5] - 21/Mar/2026
+
+- Update geolocator to ^14.0.2 for compatibility with latest apps
+- Upgrade packages
+
 ## [3.1.2] - 13/Sep/2023
 
 - Fix potential crash on hesitant camera movements #67
