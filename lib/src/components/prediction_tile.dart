@@ -28,7 +28,7 @@ class PredictionTile extends StatelessWidget {
     final List<TextSpan> result = <TextSpan>[];
     final textColor = Theme.of(context).textTheme.bodyMedium!.color;
 
-    if (prediction.matchedSubstrings.length > 0) {
+    if (prediction.matchedSubstrings.isNotEmpty) {
       MatchedSubstring matchedSubString = prediction.matchedSubstrings[0];
       // There is no matched string at the beginning.
       if (matchedSubString.offset > 0) {

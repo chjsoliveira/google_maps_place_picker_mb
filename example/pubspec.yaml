@@ -1,5 +1,5 @@
-name: google_maps_place_picker_mb_demo
-description: Google Maps Place Picker - forked MB edition
+name: google_maps_place_picker_plus_demo
+description: Google Maps Place Picker - chs fork demo
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -17,7 +17,7 @@ publish_to: none
 
 environment:
   sdk: ">=3.10.4 <4.0.0"
-  flutter: ">=3.38.8"
+  flutter: ">=3.22.0"
 
 dependencies:
   flutter:
@@ -27,7 +27,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
 
-  google_maps_place_picker_mb:
+  google_maps_place_picker_plus:
     path: ../
 
 dev_dependencies:

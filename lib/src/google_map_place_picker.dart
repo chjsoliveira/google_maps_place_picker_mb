@@ -7,9 +7,9 @@ import 'package:flutter/gestures.dart';
 import 'package:geolocator/geolocator.dart';
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:google_maps_place_picker_mb/google_maps_place_picker.dart';
-import 'package:google_maps_place_picker_mb/providers/place_provider.dart';
-import 'package:google_maps_place_picker_mb/src/components/animated_pin.dart';
+import 'package:google_maps_place_picker_plus/google_maps_place_picker.dart';
+import 'package:google_maps_place_picker_plus/providers/place_provider.dart';
+import 'package:google_maps_place_picker_plus/src/components/animated_pin.dart';
 import 'package:flutter_google_maps_webservices/geocoding.dart';
 import 'package:flutter_google_maps_webservices/places.dart';
 import 'package:provider/provider.dart';
@@ -134,10 +134,15 @@ class GoogleMapPlacePicker extends StatelessWidget {
 
     if (response.errorMessage?.isNotEmpty == true ||
         response.status == "REQUEST_DENIED") {
-      print("Camera Location Search Error: " + response.errorMessage!);
+      debugPrint("Camera Location Search Error: ${response.errorMessage}");
       if (onSearchFailed != null) {
         onSearchFailed!(response.status);
       }
+      provider.placeSearchingState = SearchingState.Idle;
+      return;
+    }
+
+    if (response.results.isEmpty) {
       provider.placeSearchingState = SearchingState.Idle;
       return;
     }
@@ -151,8 +156,7 @@ class GoogleMapPlacePicker extends StatelessWidget {
 
       if (detailResponse.errorMessage?.isNotEmpty == true ||
           detailResponse.status == "REQUEST_DENIED") {
-        print("Fetching details by placeId Error: " +
-            detailResponse.errorMessage!);
+        debugPrint("Fetching details by placeId Error: ${detailResponse.errorMessage}");
         if (onSearchFailed != null) {
           onSearchFailed!(detailResponse.status);
         }
@@ -258,7 +262,7 @@ class GoogleMapPlacePicker extends StatelessWidget {
         if (this.hidePlaceDetailsWhenDraggingPin!) {
           provider.placeSearchingState = SearchingState.Searching;
         }
-        onMoveStart!();
+        onMoveStart?.call();
       },
       onCameraMove: (CameraPosition position) {
         provider.setCameraPosition(position);
@@ -266,8 +270,9 @@ class GoogleMapPlacePicker extends StatelessWidget {
       },
       // gestureRecognizers make it possible to navigate the map when it's a
       // child in a scroll view e.g ListView, SingleChildScrollView...
-      gestureRecognizers: Set()
-        ..add(Factory<EagerGestureRecognizer>(() => EagerGestureRecognizer())),
+      gestureRecognizers: <Factory<EagerGestureRecognizer>>{
+        Factory<EagerGestureRecognizer>(() => EagerGestureRecognizer()),
+      },
     );
   }
 
@@ -379,7 +384,7 @@ class GoogleMapPlacePicker extends StatelessWidget {
 
   Widget _buildZoomButtons() {
     return Selector<PlaceProvider, Tuple2<GoogleMapController?, LatLng?>>(
-      selector: (_, provider) => new Tuple2<GoogleMapController?, LatLng?>(
+      selector: (_, provider) => Tuple2<GoogleMapController?, LatLng?>(
           provider.mapController, provider.cameraPosition?.target),
       builder: (context, data, __) {
         if (!this.zoomControlsEnabled ||
@@ -480,7 +485,7 @@ class GoogleMapPlacePicker extends StatelessWidget {
                 result.geometry!.location.lat,
                 result.geometry!.location.lng) <=
             pickArea!.radius;
-    MaterialStateColor buttonColor = MaterialStateColor.resolveWith(
+    WidgetStateColor buttonColor = WidgetStateColor.resolveWith(
         (states) => canBePicked ? Colors.lightGreen : Colors.red);
     return Container(
       margin: EdgeInsets.all(10),
