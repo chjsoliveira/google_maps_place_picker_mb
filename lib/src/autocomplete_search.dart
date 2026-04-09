@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:google_maps_place_picker_chs/google_maps_place_picker.dart';
-import 'package:google_maps_place_picker_chs/providers/place_provider.dart';
-import 'package:google_maps_place_picker_chs/providers/search_provider.dart';
-import 'package:google_maps_place_picker_chs/src/components/prediction_tile.dart';
-import 'package:google_maps_place_picker_chs/src/controllers/autocomplete_search_controller.dart';
+import 'package:google_maps_place_picker_plus/google_maps_place_picker.dart';
+import 'package:google_maps_place_picker_plus/providers/place_provider.dart';
+import 'package:google_maps_place_picker_plus/providers/search_provider.dart';
+import 'package:google_maps_place_picker_plus/src/components/prediction_tile.dart';
+import 'package:google_maps_place_picker_plus/src/controllers/autocomplete_search_controller.dart';
 import 'package:flutter_google_maps_webservices/places.dart';
 import 'package:provider/provider.dart';
 
@@ -33,8 +33,7 @@ class AutoCompleteSearch extends StatefulWidget {
       this.initialSearchString,
       this.searchForInitialValue,
       this.autocompleteOnTrailingWhitespace})
-      : assert(searchBarController != null),
-        super(key: key);
+      : super(key: key);
 
   final String? sessionToken;
   final String? hintText;
@@ -146,7 +145,7 @@ class AutoCompleteSearchState extends State<AutoCompleteSearch> {
     return Selector<SearchProvider, String>(
         selector: (_, provider) => provider.searchTerm,
         builder: (_, data, __) {
-          if (data.length > 0) {
+          if (data.isNotEmpty) {
             return Padding(
               padding: const EdgeInsets.only(right: 8.0),
               child: GestureDetector(
@@ -212,7 +211,7 @@ class AutoCompleteSearchState extends State<AutoCompleteSearch> {
 
     _clearOverlay();
 
-    if (searchTerm.length < 1) return;
+    if (searchTerm.isEmpty) return;
 
     _displayOverlay(_buildSearchingOverlay());
 

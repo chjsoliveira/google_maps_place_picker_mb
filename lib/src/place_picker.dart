@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:google_maps_place_picker_chs/google_maps_place_picker.dart';
-import 'package:google_maps_place_picker_chs/providers/place_provider.dart';
-import 'package:google_maps_place_picker_chs/src/autocomplete_search.dart';
-import 'package:google_maps_place_picker_chs/src/controllers/autocomplete_search_controller.dart';
-import 'package:google_maps_place_picker_chs/src/google_map_place_picker.dart';
+import 'package:google_maps_place_picker_plus/google_maps_place_picker.dart';
+import 'package:google_maps_place_picker_plus/providers/place_provider.dart';
+import 'package:google_maps_place_picker_plus/src/autocomplete_search.dart';
+import 'package:google_maps_place_picker_plus/src/controllers/autocomplete_search_controller.dart';
+import 'package:google_maps_place_picker_plus/src/google_map_place_picker.dart';
 import 'package:flutter_google_maps_webservices/places.dart';
 import 'package:http/http.dart';
 import 'package:provider/provider.dart';
@@ -265,7 +265,7 @@ class _PlacePickerState extends State<PlacePicker> {
       widget.httpClient,
       headers,
     );
-    provider.sessionToken = Uuid().v4();
+    provider.sessionToken = const Uuid().v4();
     provider.desiredAccuracy = widget.desiredLocationAccuracy;
     provider.setMapType(widget.initialMapType);
     if (widget.useCurrentLocation != null && widget.useCurrentLocation!) {
@@ -277,10 +277,9 @@ class _PlacePickerState extends State<PlacePicker> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-        onWillPop: () {
-          searchBarController.clearOverlay();
-          return Future.value(true);
+    return PopScope(
+        onPopInvokedWithResult: (didPop, result) {
+          if (didPop) searchBarController.clearOverlay();
         },
         child: FutureBuilder<PlaceProvider>(
           future: _futureProvider,
@@ -404,6 +403,7 @@ class _PlacePickerState extends State<PlacePicker> {
   }
 
   _pickPrediction(Prediction prediction) async {
+    if (prediction.placeId == null) return;
     provider!.placeSearchingState = SearchingState.Searching;
 
     final PlacesDetailsResponse response =

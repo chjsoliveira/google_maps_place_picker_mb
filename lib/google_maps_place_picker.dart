@@ -1,4 +1,4 @@
-library google_maps_place_picker_chs;
+library google_maps_place_picker_plus;
 
 export 'src/models/pick_result.dart';
 export 'src/components/floating_card.dart';

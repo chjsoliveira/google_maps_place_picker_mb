@@ -1,4 +1,4 @@
-name: google_maps_place_picker_chs
+name: google_maps_place_picker_plus
 description: A Flutter plugin which provides 'Picking Place' using Google Maps
   widget. Actively maintained fork with bug fixes and compatibility updates.
 version: 3.2.0

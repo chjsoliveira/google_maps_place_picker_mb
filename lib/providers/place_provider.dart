@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:google_maps_place_picker_chs/src/models/pick_result.dart';
-import 'package:google_maps_place_picker_chs/src/place_picker.dart';
+import 'package:google_maps_place_picker_plus/src/models/pick_result.dart';
+import 'package:google_maps_place_picker_plus/src/place_picker.dart';
 import 'package:flutter_google_maps_webservices/geocoding.dart';
 import 'package:flutter_google_maps_webservices/places.dart';
 import 'package:http/http.dart';
@@ -21,13 +21,13 @@ class PlaceProvider extends ChangeNotifier {
       apiKey: apiKey,
       baseUrl: proxyBaseUrl,
       httpClient: httpClient,
-      apiHeaders: apiHeaders as Map<String, String>?,
+      apiHeaders: apiHeaders.cast<String, String>(),
     );
     geocoding = GoogleMapsGeocoding(
       apiKey: apiKey,
       baseUrl: proxyBaseUrl,
       httpClient: httpClient,
-      apiHeaders: apiHeaders as Map<String, String>?,
+      apiHeaders: apiHeaders.cast<String, String>(),
     );
   }
 
